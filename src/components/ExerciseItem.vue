@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useExerciseStore } from '@/stores/exercise';
-import ExerciseItemSummary from '@/modules/setsProgression/ExerciseItemSummary.vue';
-import ExerciseItemExpanded from '@/modules/setsProgression/ExerciseItemExpanded.vue';
+import ModuleComponent from '@/moduleLoader/ModuleComponent.vue';
 
 type Props = {
   exerciseId: string;
@@ -24,16 +23,14 @@ const toggleExpand = ref<boolean>(false);
     <template v-else>
       <button class="exercise-button" @click="toggleExpand = !toggleExpand">
         <div>{{ exercise.name }}</div>
-        <!-- summary modules -->
-        <template v-if="exercise.modules.includes('setsProgression')">
-          <ExerciseItemSummary :exerciseId="props.exerciseId" />
+        <template v-for="mod in exercise.modules" :key="mod">
+          <ModuleComponent :module="mod" component="ExerciseItemSummary" :exerciseId="props.exerciseId" />
         </template>
       </button>
       <div v-if="toggleExpand" class="expand">
-        <template v-if="exercise.modules.includes('setsProgression')">
-          <ExerciseItemExpanded :exerciseId="props.exerciseId" />
+        <template v-for="mod in exercise.modules" :key="mod">
+          <ModuleComponent :module="mod" component="ExerciseItemExpanded" :exerciseId="props.exerciseId" />
         </template>
-        <!-- expanded modules -->
         <button @click="exerciseStore.save">Save</button>
       </div>
     </template>

@@ -1,6 +1,6 @@
 #+TITLE: Todo
 #+STARTUP: indent
-#+TODO: TODO TODO_NEXT DONE
+#+TODO: TODO TODO_NEXT TODO_LATER DONE
 
 * DONE Real reading and writing with dummy data / hand-written json
 - just saving the 'next' section
@@ -20,6 +20,22 @@ Look into nice and typesafe ways of loading modules
   - unless I can think of a better of handling exercise and module schemas
 - ExerciseItem should be able to dynamically load and render a Summary component (in the item button that expands when you click it) and an Expanded component (in the expanded section of the exercise item)
   - these components are optional for a module to have
+** DONE Module component to handle rendering in ExerciseItem
+** TODO_NEXT Join module schema with exercise schema
+** TODO Type safety in ModuleComponent
+- accepted module names are essentially the names of folders inside @/modules/
+  - probably have to manually update the type for each module added - I don't think it's possible for ts to make a type based on reading filesystem directories (without getting too weird at least)
+    - could make a script to generate the type, but I don't see that as much better than just updating manually
+- accepted component names are just ExerciseItemSummary and ExerciseItemExpanded for now
+** TODO_LATER Think about handling loading and error states in ModuleComponent
+- the components are optional, so it wouldn't know that a component failing to load is an error
+  - unless there's something like a manifest - something to think about
+** TODO_LATER Think about waiting for all the modules to load before rendering everything
+- just in case there's any flickering or elements jumping around while modules are loading
+- defineAsyncComponent takes a function that returns a Promise so a possible way is:
+  - when a module component should be rendered/first used it registers that module with a loading state in a store somewhere
+  - when the promise resolves, then change the loading state to loaded
+  - when all are loaded (probably with a short delay in case modules are added after some have fully loaded), then that's the signal to render everything or remove the spinner
 
 * TODO Modules
 Split exercise data into plugins for:
