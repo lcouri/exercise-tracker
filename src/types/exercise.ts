@@ -32,7 +32,7 @@ export type ExerciseBase = {
 //   name - I know it doesn't need to be unique because I'm using ids,
 //   but I still think it would save a lot of headache
 // 'next' field required because that tracks which weight,etc. to do next
-type ExerciseVariation = {
+export type ExerciseVariation = {
   exerciseType: 'variation';
   baseId: string;
 } & Partial<ExerciseDetails> &

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useExerciseStore } from '@/stores/exercise';
 
 type Props = {
@@ -11,34 +11,34 @@ const props = defineProps<Props>();
 const exerciseStore = useExerciseStore();
 
 // shortcut to referenced exercise
-const exercise = exerciseStore.exercises[props.exerciseId];
+const exercise = computed(() => exerciseStore.exercises?.[props.exerciseId]);
 
 const toggleExpand = ref<boolean>(false);
 const currentSetNumber = ref<number>(0);
 
 const toggleCustomWeight = ref<boolean>(false);
-const customWeight = ref<number>(exercise?.next.weight || 0);
+const customWeight = ref<number>(exercise.value?.next.weight || 0);
 const setCustomWeight = () => {
-  if (exercise) {
-    exercise.next.weight = customWeight.value;
+  if (exercise.value) {
+    exercise.value.next.weight = customWeight.value;
   }
   toggleCustomWeight.value = false;
 };
 
 const toggleCustomSetsReps = ref(false);
-const customSets = ref(exercise?.next.sets || 0);
-const customReps = ref(exercise?.next.reps || 0);
+const customSets = ref(exercise.value?.next.sets || 0);
+const customReps = ref(exercise.value?.next.reps || 0);
 const setCustomSetsReps = () => {
-  if (exercise) {
-    exercise.next.sets = customSets.value;
-    exercise.next.reps = customReps.value;
+  if (exercise.value) {
+    exercise.value.next.sets = customSets.value;
+    exercise.value.next.reps = customReps.value;
   }
   toggleCustomSetsReps.value = false;
 };
 
 const incrementWeight = () => {
-  if (exercise) {
-    exercise.next.weight = exercise.next.weight + exercise.weightIncrement;
+  if (exercise.value) {
+    exercise.value.next.weight = exercise.value.next.weight + exercise.value.weightIncrement;
   }
 };
 </script>
@@ -83,6 +83,7 @@ const incrementWeight = () => {
           <button>📝</button>
         </div>
       </div>
+      <button @click="exerciseStore.save">Save</button>
     </div>
   </template>
 </template>
