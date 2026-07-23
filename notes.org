@@ -120,12 +120,23 @@ Keeping track of technical/architectural decisions made and ideas for what this 
 - should also be able to explicitly set the weight as well
 ** notes component
 - render/edit notes for an exercise
+  - would like to use markdown rendering
+  - don't know if I'd want any other way of rendering, but probably would make a different notes component for that
 - I'm thinking that I still like the idea of combining notes for exercise variations
   - +could use an exercise group field?+
     - although how would you know what the base notes are vs notes just for this exercise?
   - could have something like a noteId, so multiple exercises could reference the same noteId
     - changing notes for a noteId in one exercise updates the notes in any other exercise using that noteId
     - notes would be a list, so you can select a pre-existing note (i.e. use an existing noteId) or make a new one
+** plate calculator
+- set up what plates are available (e.g. 20kg, 15kg, ..., 2.5kg, 1.25kg)
+  - and weight of bar, starting resistance, anything else
+- shows which plates to use to get to a given weight
+- I know it seems kinda silly and I'm undecided on implementing it, but:
+  -  there's a few machines I use that have a different starting resistance
+  - also for some reason my gym decided to use lbs as the basis for machines with kg conversions printed next to it (plates are still in kg)
+    so it's kinda annoying that these increment by 2.3kg rather than a nicer, rounder 2.5kg (or 5kg)
+    and the starting resistances are lbs conversions to kg as well
 
 * Saving current workout progress to a temp file
 - probably want to save e.g. which set you're on to a temp file, to make sure it's easy to resume in case you close the app
