@@ -1,0 +1,31 @@
+#+TITLE: Exercise Tracker
+#+STARTUP: indent
+
+A little hobby project because I'm tired of using my notes app to track my exercises in the gym.
+Still very much a work in progress; right now I'm just exploring a few ideas, what it could look like, what's possible, how it should be structured, etc.
+
+* Requirements
+- node ^20.19.0 || >=22.12.0 (using version 26.3.0)
+- npm
+- android studio
+
+* Project Setup
+#+begin_src sh
+  npm install
+#+end_src
+
+* Compile and Hot-Reload for Development
+#+begin_src sh
+  npm run dev
+#+end_src
+
+* Type-Check, Compile and Minify for Production
+** browser
+#+begin_src sh
+  npm run build
+#+end_src
+** android
+Looks like this needs keystore setup - I've just been running directly from android studio for now, using my phone as the device to target/run on
+#+begin_src sh
+  npm run build-android
+#+end_src

@@ -1,0 +1,16 @@
+{
+  "id": "id-programme",
+  "name": "GZCLP cycle 1",
+  "startDate": "2026-06-11",
+  "endDate": null,
+  "dayPlans": [
+    {
+      "name": "Day 1",
+      "exercises": ["id-dl-main", "id-ohp-t2", "id-row-main"]
+    },
+    {
+      "name": "Day 2",
+      "exercises": ["id-ohp-main", "id-dl-sumo", "id-row-main"]
+    }
+  ]
+}

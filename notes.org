@@ -1,37 +1,107 @@
-* Exercise Tracker
+#+TITLE: Notes
+#+STARTUP: indent
 
-Just a little hobby project to make an exercise tracker, since I'm tired of just using my Notes app.
+Keeping track of technical/architectural decisions made and ideas for what this should do or how it should do it.
 
-The idea is to make it as a PWA, using Nuxt for pre-rendering.
+* Goal
+- mainly to have something nicer than just a Notes app for tracking my workouts
+- would be nice to track history as well - e.g. weights done on each date
+- shouldn't need any permissions
+- background:
+  - currently doing a gzcl-style programme customised to what I want - simple, easy to change, general fitness goal rather than e.g. for sports or competition
+  - main point is that this has 3 tiers of exercises:
+    - t1: low reps, high weights
+    - t2: medium reps, medium weights - variations on t1 exercises
+    - t3: high reps, lower weights - counting the number of reps you can do, as well as weight
 
-* Ideas
-** I'm thinking this should have 3 tabs:
-  - Default view - use when exercising to keep track of sets, exercises done, etc.
-  - Exercise view - use to set up exercises, the exercises to do for each Day
-  - History view - track days + exercises done, and cycle start + end date
-    - can add later, will need to think about how to store this data
-    - would be fun to have graphs though :D
-** Elements:
-  - Exercise - exercise name, weight, sets, reps, notes
-    - starting weights for current cycle
-    - max weight for cycle, PRs
-    - maybe reps done as well as weight for relevant exercises
-  - Day - list of exercises to do
-  - Cycle - start and end date of cycle, so I know when I've reset
+* Architecture
+** Vue
+- I just like using Vue
+- I think a frontend web framework (like Vue) is nice for a simple app like this
+  - as in simple interactions, styling, etc.
+  - makes development and debugging easier with web dev tools (can run on browser rather than having to use Android Studio for example)
+  - caveat: got more experience with web frontends, there could be an alternative that I just don't know about
+** Capacitor
+- can use any frontend framework, and has a simple filesystem api
+- initial idea was to make a PWA because I figured it'd be simpler than an actual mobile app, but it looked like they don't support the simple filesystem access I wanted
+  - see Files section - just want to be able to read/write simple .json files in the filesystem without having to deal with localStorage, indexedDB or anything like that
+  - basically I want this app to be fully offline, I don't think that's really the concept for PWAs
+- looked into a few alternatives
+  - React Native
+    - prefer Vue's reactivity system
+    - can't just use divs or regular html
+  - Flutter, Kotlin Multiplatform
+    - render to canvas so can't really make use of web dev tools
+  - I think Cordova is essentially an older version of the same concept
+** Files
+- want to be able to read/write known files without any popups in most cases:
+  - read files on startup to get last used workout
+  - save when workout is done or just periodically in the background - should not block UI
+  - maybe want to be able to export data or use different files for different programmes
+- jsons for ease of integration with js
+*** exercise.json
+- has the exercises with default settings, variations, personal records and notes
+- variations inherit properties (e.g. notes) from base, but can override
+- e.g. Deadlift is a base, with a main variation at 5x3, and Sumo Deadlift or tier 2 variation at 3x10
+- should also show the next weight at sets + reps to lift
+  - history.json shows what you last lifted, but I want to store what to do next somewhere
+  - this also means we don't need to load history.json most of time, which is good because it's a file that constantly grows
+  - I don't think this is the best place to put the 'next' data but I'll have to think about it more
+*** programme.json
+- has the daily plans - Day 1 (Squat), Day 2 (Overhead Press), etc.
+- also things like start date and end date
+*** history.json
+- records the weights lifted at sets + reps on which date
+- this would mostly be wanted for a history view, but it would still need to be updated during workouts after each exercise
+  - think about efficient ways to append to .json files?
+- something to think about after everything's working
 
-* Notes to self
+* Exercises - base and variations
+** Would like to define a base exercise and a variation of it
+- in my workouts I do the same exercise heavier with fewer reps on one day and lighter with more reps on another day
+  - I would like to keep these 2 variations separate but related, mostly for tracking stats
+  - also it can be an actual variation on an exercise - like squat one day, hack squat on another
+- I would also like to not duplicate data from the base (such as weightIncrement or achieved reps)
+  - the variation would just use the base's data if not defined
+** Reading and saving
+- the variation inheriting the base's data means that the data needs to be combined on read and de-duped on save
+- combining isn't a problem, but de-duping on save might be
+  - depends on how often it saves
+  - right now the 'next' field is in the exercise, so it'll save after every workout
+  - will probably want to move 'next' out of exercise, so then it only saves when you make a change to the exercise (probably most often with 'notes')
+  - probably only an issue if you have lots of variations - only need to check if it has a baseId and then the objects are pretty small so the comparison probably won't be that expensive
+    - still, it's fun to think about these things :)
+  - I'm thinking it could be interesting to put the de-duping in a worker or something like that
+    - needs to be able to cancel if new data comes in before it's finished processing
+    - I think it's fine if the save isn't instant, so long as it's non-blocking
+** alternatives to combining right after reading and de-duping just before saving
+- only combine when reading in e.g. the ExerciseItem (pushing things closer to the viewing/modifying rather than the reading/writing)
+  - wouldn't need to de-dupe, but this does mean that everything needs to know about variations
+  - I think it's better to have this kind of thing closer to read/write, so nothing else needs to care about the implementation
+** alternative patterns
+- maybe look into more of an ECS pattern?
+  - entity: exercise
+  - components: sets, reps (then can make a system for going to the next tier)
+
+* Saving current workout progress to a temp file
+- probably want to save e.g. which set you're on to a temp file, to make sure it's easy to resume in case you close the app
+- saving for this does need to be very fast
+- keep track of:
+  - which set you're on for each exercise
+  - current exercise day
+  - which exercises are open
+
+* Tabs
+- Default view - use when exercising to keep track of sets, exercises done, etc.
+- Exercise view - use to view and set up exercises
+- Programme view - use to view and set up the programme - i.e. the exercises to do each day
+- History view - track days + exercises done, and cycle start + end date
+  - can add later, will need to think about how to store this data
+  - would be fun to have graphs though :D
+
+* UI Ideas
 ** The "started" part in the select should appear when clicking + or - on any set in the day
-  - that whole bit is just in case I forget to hit "Done" at the end of a workout
-** The "Did x y days ago" should be dismissable
-  - this bit is just so I'm more certain I'm doing the correct day
-** Probably need to separate sets and reps in data schema
-** The "notes" in an exercise item should be a textarea (or change to textarea on clicking)
+- that whole bit is just in case I forget to hit "Done" at the end of a workout
+** The "Did x y days ago" should be dismissible
+- this bit is just so I'm more certain I'm doing the correct day
 ** Clicking "Done" on an exercise should grey it out (or some other done indicator like strikethrough)
-** Need some way of adding/removing exercises
-  - probably want a dedicated tab for setting up exercises and/or days
-  - although might want to be able to do it from the default view
-  - probably need ids for exercises and days so can change names easily
-  - I do some exercises with different sets/reps on different days; think about how to represent that in schema
-    - maybe an array of "variations"?
-    - want to keep same notes
-    - although I do also have variations like Deadlift or Sumo Deadlift

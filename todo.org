@@ -1,0 +1,21 @@
+#+TITLE: Todo
+#+STARTUP: indent
+#+TODO: TODO TODO_NEXT DONE
+
+* TODO_NEXT Real reading and writing with dummy data / hand-written json
+- just saving the 'next' section
+- can edit notes as well, but something to implement after exercise view
+
+* TODO Zod schemas for exercise & programme
+
+* TODO Exercise View for adding/editing exercises
+- should probably make my workout using this to make sure it works
+  - tbh it's tempting to just directly write the json, but I'm thinking it would be annoying to do on the phone; I'd only do it on my laptop and I want this to be as easy to edit as possible
+- would need to think about how to implement forms and saving
+** Depends on Zod schemas
+
+* TODO Programme View
+- most of the hard work should be done before this, so it should be relatively simple
+** Depends on Zod schemas
+
+* TODO Temp file for keeping state when closing app
