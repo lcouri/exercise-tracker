@@ -1,11 +1,11 @@
 export type ProgrammeJson = {
-  id: string
-  name: string
-  startDate: string
-  endDate: string | null
+  id: string;
+  name: string;
+  startDate: string;
+  endDate: string | null;
   dayPlans: {
-    name: string
+    name: string;
     // list of exercise ids
-    exercises: string[]
-  }[]
-}
+    exercises: string[];
+  }[];
+};

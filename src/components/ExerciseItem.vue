@@ -1,46 +1,46 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useExerciseStore } from '@/stores/exercise'
+import { ref } from 'vue';
+import { useExerciseStore } from '@/stores/exercise';
 
 type Props = {
-  exerciseId: string
-}
+  exerciseId: string;
+};
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-const exerciseStore = useExerciseStore()
+const exerciseStore = useExerciseStore();
 
 // shortcut to referenced exercise
-const exercise = exerciseStore.exercises[props.exerciseId]
+const exercise = exerciseStore.exercises[props.exerciseId];
 
-const toggleExpand = ref<boolean>(false)
-const currentSetNumber = ref<number>(0)
+const toggleExpand = ref<boolean>(false);
+const currentSetNumber = ref<number>(0);
 
-const toggleCustomWeight = ref<boolean>(false)
-const customWeight = ref<number>(exercise?.next.weight || 0)
+const toggleCustomWeight = ref<boolean>(false);
+const customWeight = ref<number>(exercise?.next.weight || 0);
 const setCustomWeight = () => {
   if (exercise) {
-    exercise.next.weight = customWeight.value
+    exercise.next.weight = customWeight.value;
   }
-  toggleCustomWeight.value = false
-}
+  toggleCustomWeight.value = false;
+};
 
-const toggleCustomSetsReps = ref(false)
-const customSets = ref(exercise?.next.sets || 0)
-const customReps = ref(exercise?.next.reps || 0)
+const toggleCustomSetsReps = ref(false);
+const customSets = ref(exercise?.next.sets || 0);
+const customReps = ref(exercise?.next.reps || 0);
 const setCustomSetsReps = () => {
   if (exercise) {
-    exercise.next.sets = customSets.value
-    exercise.next.reps = customReps.value
+    exercise.next.sets = customSets.value;
+    exercise.next.reps = customReps.value;
   }
-  toggleCustomSetsReps.value = false
-}
+  toggleCustomSetsReps.value = false;
+};
 
 const incrementWeight = () => {
   if (exercise) {
-    exercise.next.weight = exercise.next.weight + exercise.weightIncrement
+    exercise.next.weight = exercise.next.weight + exercise.weightIncrement;
   }
-}
+};
 </script>
 
 <template>

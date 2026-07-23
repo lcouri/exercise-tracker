@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import ExerciseItem from '@/components/ExerciseItem.vue'
-import { useProgrammeStore } from '@/stores/programme'
+import { ref, computed } from 'vue';
+import ExerciseItem from '@/components/ExerciseItem.vue';
+import { useProgrammeStore } from '@/stores/programme';
 
-const programmeStore = useProgrammeStore()
+const programmeStore = useProgrammeStore();
 
-const exerciseDay = ref(programmeStore.programme.dayPlans[0])
+const exerciseDay = ref(programmeStore.programme.dayPlans[0]);
 
 const exerciseDaySelect = computed({
   get: () => exerciseDay.value?.name,
   set: (newName) =>
     (exerciseDay.value = programmeStore.programme.dayPlans.find((e) => e.name === newName)),
-})
-const exerciseDaysAvailable = computed(() => programmeStore.programme.dayPlans)
+});
+const exerciseDaysAvailable = computed(() => programmeStore.programme.dayPlans);
 </script>
 
 <template>

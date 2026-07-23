@@ -1,1 +1,1 @@
-export type Status = 'init' | 'loading' | 'done' | 'error'
+export type Status = 'init' | 'loading' | 'done' | 'error';
