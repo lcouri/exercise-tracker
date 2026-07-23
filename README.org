@@ -14,18 +14,30 @@ Still very much a work in progress; right now I'm just exploring a few ideas, wh
   npm install
 #+end_src
 
-* Compile and Hot-Reload for Development
+* Dev (browser)
 #+begin_src sh
   npm run dev
 #+end_src
 
-* Type-Check, Compile and Minify for Production
+* Build
 ** browser
 #+begin_src sh
   npm run build
 #+end_src
+
 ** android
-Looks like this needs keystore setup - I've just been running directly from android studio for now, using my phone as the device to target/run on
 #+begin_src sh
-  npm run build-android
+  # builds the html/css/js part of the app
+  npm run build
+
+  # copies web app build into native app
+  # and updates capacitor plugins + package.json dependencies
+  npm run cap-sync
+
+  # opens android studio with the project loaded
+  # right now my development workflow is:
+  #   connect my phone via usb,
+  #   select my phone in devices,
+  #   hit run in android studio
+  npm run cap-open-android
 #+end_src
