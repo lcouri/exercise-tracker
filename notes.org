@@ -1,0 +1,37 @@
+* Exercise Tracker
+
+Just a little hobby project to make an exercise tracker, since I'm tired of just using my Notes app.
+
+The idea is to make it as a PWA, using Nuxt for pre-rendering.
+
+* Ideas
+** I'm thinking this should have 3 tabs:
+  - Default view - use when exercising to keep track of sets, exercises done, etc.
+  - Exercise view - use to set up exercises, the exercises to do for each Day
+  - History view - track days + exercises done, and cycle start + end date
+    - can add later, will need to think about how to store this data
+    - would be fun to have graphs though :D
+** Elements:
+  - Exercise - exercise name, weight, sets, reps, notes
+    - starting weights for current cycle
+    - max weight for cycle, PRs
+    - maybe reps done as well as weight for relevant exercises
+  - Day - list of exercises to do
+  - Cycle - start and end date of cycle, so I know when I've reset
+
+* Notes to self
+** The "started" part in the select should appear when clicking + or - on any set in the day
+  - that whole bit is just in case I forget to hit "Done" at the end of a workout
+** The "Did x y days ago" should be dismissable
+  - this bit is just so I'm more certain I'm doing the correct day
+** Probably need to separate sets and reps in data schema
+** The "notes" in an exercise item should be a textarea (or change to textarea on clicking)
+** Clicking "Done" on an exercise should grey it out (or some other done indicator like strikethrough)
+** Need some way of adding/removing exercises
+  - probably want a dedicated tab for setting up exercises and/or days
+  - although might want to be able to do it from the default view
+  - probably need ids for exercises and days so can change names easily
+  - I do some exercises with different sets/reps on different days; think about how to represent that in schema
+    - maybe an array of "variations"?
+    - want to keep same notes
+    - although I do also have variations like Deadlift or Sumo Deadlift
