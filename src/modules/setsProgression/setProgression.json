@@ -1,0 +1,12 @@
+{
+  "t1": [
+    { "sets": 5, "reps": 3 },
+    { "sets": 6, "reps": 2 },
+    { "sets": 10, "reps": 1 }
+  ],
+  "t2": [
+    { "sets": 3, "reps": 10 },
+    { "sets": 3, "reps": 8 },
+    { "sets": 3, "reps": 6 }
+  ]
+}

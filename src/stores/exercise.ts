@@ -65,7 +65,7 @@ export const useExerciseStore = defineStore('exercise', () => {
 
   // TODO: loading static data initially until there's something to make the initial exercise data
   const exercises = ref<CombinedExercises | undefined>(
-    combineExercises(staticExerciseData as ExerciseJson),
+    combineExercises(staticExerciseData as any),
   );
 
   const save = () => {

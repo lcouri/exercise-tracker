@@ -13,7 +13,15 @@
 - parsing for reading and especially writing data has a lot of casting 'as' - hopefully can do something about that later
 - should probably do the same for programme.json, but that can come later - I'd rather get the exercise part to where I want it first, the programme part should be a lot simpler
 
-* TODO_NEXT Plugins/modules/components
+* TODO_NEXT Module loading
+Look into nice and typesafe ways of loading modules
+- user saved data should say which modules are used for an exercise
+- schemas should be able to dynamically add module schemas to the exercise schema
+  - unless I can think of a better of handling exercise and module schemas
+- ExerciseItem should be able to dynamically load and render a Summary component (in the item button that expands when you click it) and an Expanded component (in the expanded section of the exercise item)
+  - these components are optional for a module to have
+
+* TODO Modules
 Split exercise data into plugins for:
 ** TODO sets + reps
 ** TODO weight

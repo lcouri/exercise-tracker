@@ -42,10 +42,9 @@ const exerciseDaysAvailable = computed(() => programmeStore.programme.dayPlans);
   font-size: 1.25rem;
 }
 .exercises {
-  list-style: none;
   padding: 0.5rem 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr 4fr;
-  grid-gap: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 </style>

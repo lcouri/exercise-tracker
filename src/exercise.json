@@ -1,61 +1,32 @@
 {
   "id-dl-main": {
-    "exerciseType": "base",
     "name": "Deadlift",
-    "notes": ["Base deadlift notes"],
-    "showAchievedReps": false,
-    "weightIncrement": 5,
-    "next": {
-      "sets": 5,
-      "reps": 3,
-      "weight": 95
+    "modules": ["setsProgression"],
+    "moduleData": {
+      "setsProgression": {
+        "progression": "t1",
+        "index": 0
+      }
     }
   },
   "id-dl-sumo": {
-    "exerciseType": "variation",
-    "baseId": "id-dl-main",
     "name": "Sumo Deadlift",
-    "notes": ["Extra notes for sumo deadlift"],
-    "weightIncrement": 2.5,
-    "next": {
-      "sets": 3,
-      "reps": 10,
-      "weight": 75
-    }
+    "modules": [],
+    "moduleData": {}
   },
   "id-ohp-main": {
-    "exerciseType": "base",
     "name": "Overhead Press",
-    "notes": ["Base ohp notes"],
-    "showAchievedReps": false,
-    "weightIncrement": 2.5,
-    "next": {
-      "sets": 5,
-      "reps": 3,
-      "weight": 47.5
-    }
+    "modules": [],
+    "moduleData": {}
   },
   "id-ohp-t2": {
-    "exerciseType": "variation",
-    "baseId": "id-ohp-main",
     "name": "Overhead Press T2",
-    "next": {
-      "sets": 3,
-      "reps": 10,
-      "weight": 32.5
-    }
+    "modules": [],
+    "moduleData": {}
   },
   "id-row-main": {
-    "exerciseType": "base",
     "name": "Dumbbell row",
-    "notes": ["Base db row notes"],
-    "showAchievedReps": true,
-    "weightIncrement": 2.5,
-    "next": {
-      "sets": 3,
-      "reps": 15,
-      "weight": 30,
-      "acheivedReps": 15
-    }
+    "modules": [],
+    "moduleData": {}
   }
 }
