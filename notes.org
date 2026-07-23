@@ -74,14 +74,28 @@ Keeping track of technical/architectural decisions made and ideas for what this 
   - I'm thinking it could be interesting to put the de-duping in a worker or something like that
     - needs to be able to cancel if new data comes in before it's finished processing
     - I think it's fine if the save isn't instant, so long as it's non-blocking
+  - another thing to think about is that de-duping doesn't know if it's intentionally inheriting or not (fields might have same value, but might not want to tie them together)
 ** alternatives to combining right after reading and de-duping just before saving
 - only combine when reading in e.g. the ExerciseItem (pushing things closer to the viewing/modifying rather than the reading/writing)
   - wouldn't need to de-dupe, but this does mean that everything needs to know about variations
   - I think it's better to have this kind of thing closer to read/write, so nothing else needs to care about the implementation
+- perhaps the ExerciseVariation should have a list of all the fields that are inherited?
+  - more explicit
+  - then de-duping isn't needed
+  - this would mean that when the base updates a field, it would need to update all the variations that reference it
+  - there could be a data mismatch or de-sync between the base and variation - maybe could update/check manually or on load?
 ** alternative patterns
 - maybe look into more of an ECS pattern?
   - entity: exercise
   - components: sets, reps (then can make a system for going to the next tier)
+
+* Modularity / plugins
+** A more ECS approach could make plugins a thing
+- I'm thinking of an example with sets/reps for gzcl - these parts could be in a plugin folder for example
+  - a list of sets/reps (e.g. 5x3, 6x2, 10x1) as part of the data for this plugin
+  - should be able to add a field to exercise entity that references one of those sets/reps
+  - system for going to the next sets/reps (e.g. 5x3 -> 6x2) when you press a button
+    - so it should also define something to render - probably split up for ExerciseItem, and wherever else it would be shown
 
 * Saving current workout progress to a temp file
 - probably want to save e.g. which set you're on to a temp file, to make sure it's easy to resume in case you close the app
@@ -105,3 +119,12 @@ Keeping track of technical/architectural decisions made and ideas for what this 
 ** The "Did x y days ago" should be dismissible
 - this bit is just so I'm more certain I'm doing the correct day
 ** Clicking "Done" on an exercise should grey it out (or some other done indicator like strikethrough)
+
+* Technical notes
+** Directory.Data stores it in Android/Data/com.exercisetracker.app/files/ - however this isn't visible in the Android file explorer app
+*** need to use adb (get from android-tools package with archlinux)
+- =adb shell=
+- =run-as com.exercisetracker.app=
+  - this shows that folder with the permissions of the app
+  - here you can =cat ./files/foo.txt=
+- note that these files are removed when app is uninstalled
