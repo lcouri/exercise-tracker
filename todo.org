@@ -13,6 +13,13 @@
 - parsing for reading and especially writing data has a lot of casting 'as' - hopefully can do something about that later
 - should probably do the same for programme.json, but that can come later - I'd rather get the exercise part to where I want it first, the programme part should be a lot simpler
 
+* TODO_NEXT Plugins/modules/components
+Split exercise data into plugins for:
+** TODO sets + reps
+** TODO weight
+** TODO AMRAP
+** TODO notes
+** TODO then remove the whole combining/uncombining exercise data thing since it shouldn't be needed
 
 * TODO Zod schemas for exercise & programme
 

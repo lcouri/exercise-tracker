@@ -1,5 +1,6 @@
 #+TITLE: Notes
 #+STARTUP: indent
+#+TODO: DEPRECATED
 
 Keeping track of technical/architectural decisions made and ideas for what this should do or how it should do it.
 
@@ -12,7 +13,8 @@ Keeping track of technical/architectural decisions made and ideas for what this 
   - main point is that this has 3 tiers of exercises:
     - t1: low reps, high weights
     - t2: medium reps, medium weights - variations on t1 exercises
-    - t3: high reps, lower weights - counting the number of reps you can do, as well as weight
+    - t3: high reps, lower weights - counting the number of reps you can do (AMRAP As Many Reps As Possible), as well as weight
+- Right now I'm focusing less on getting it to a usable state, and more on exploring some technical architecture ideas (like plugins/modules for exercises) and looking at how to use an ECS pattern for this
 
 * Architecture
 ** Vue
@@ -56,7 +58,9 @@ Keeping track of technical/architectural decisions made and ideas for what this 
   - think about efficient ways to append to .json files?
 - something to think about after everything's working
 
-* Exercises - base and variations
+* DEPRECATED Exercises - base and variations
+** =Deprecated notes=
+- decided to throw this idea of base and variation out and look more into composition with more of an ECS style and using that to implement plugins/modules for exercises
 ** Would like to define a base exercise and a variation of it
 - in my workouts I do the same exercise heavier with fewer reps on one day and lighter with more reps on another day
   - I would like to keep these 2 variations separate but related, mostly for tracking stats
@@ -89,13 +93,39 @@ Keeping track of technical/architectural decisions made and ideas for what this 
   - entity: exercise
   - components: sets, reps (then can make a system for going to the next tier)
 
-* Modularity / plugins
-** A more ECS approach could make plugins a thing
-- I'm thinking of an example with sets/reps for gzcl - these parts could be in a plugin folder for example
-  - a list of sets/reps (e.g. 5x3, 6x2, 10x1) as part of the data for this plugin
-  - should be able to add a field to exercise entity that references one of those sets/reps
-  - system for going to the next sets/reps (e.g. 5x3 -> 6x2) when you press a button
-    - so it should also define something to render - probably split up for ExerciseItem, and wherever else it would be shown
+* Modularity / plugins with an Entity Component System approach
+** What plugins would have
+- data to add to exercise entity
+  - e.g. sets/reps: a list of sets + reps to use (5x3, 6x2, 10x1)
+- how to render in an ExerciseItem or other components
+  - e.g. sets/reps: rendering text "5x3", buttons to increment/decrement sets, etc.
+- any logic the plugin needs
+  - e.g. sets/reps: button to go to the next sets/reps after failure (5x3 -> 6x2)
+- would need to save data for an exercise
+- might need to think about how they would interact with other plugins in an exercise
+** Exercise entity
+- has some basic fields like name or id
+- maybe should have a group field? (for the tier 1 and tier 2 exercise variations)
+- other fields come from components which could be added based on what you want for that exercise
+  - e.g. you might use a component that just shows sets and reps or a component for AMRAP that shows reps achieved
+** Sets + reps component
+- a list of sets/reps (e.g. 5x3, 6x2, 10x1) as part of the data for this plugin
+- system for going to the next sets/reps (e.g. 5x3 -> 6x2) when you press a button
+- render setsXreps in ExerciseItem, show current set you're on, and buttons for incrementing/decrementing the sets
+** AMRAP component
+- shows the achieved reps for an exercise at that weight
+  - e.g. an exercise could be 3x15+ and you'd want to record that you did 17 reps
+** weight component
+- shows weight and has a weightIncrement so you press a button and it'll increase the weight by that amount
+- should also be able to explicitly set the weight as well
+** notes component
+- render/edit notes for an exercise
+- I'm thinking that I still like the idea of combining notes for exercise variations
+  - +could use an exercise group field?+
+    - although how would you know what the base notes are vs notes just for this exercise?
+  - could have something like a noteId, so multiple exercises could reference the same noteId
+    - changing notes for a noteId in one exercise updates the notes in any other exercise using that noteId
+    - notes would be a list, so you can select a pre-existing note (i.e. use an existing noteId) or make a new one
 
 * Saving current workout progress to a temp file
 - probably want to save e.g. which set you're on to a temp file, to make sure it's easy to resume in case you close the app
