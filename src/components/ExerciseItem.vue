@@ -24,12 +24,20 @@ const toggleExpand = ref<boolean>(false);
       <button class="exercise-button" @click="toggleExpand = !toggleExpand">
         <div>{{ exercise.name }}</div>
         <template v-for="mod in exercise.modules" :key="mod">
-          <ModuleComponent :module="mod" component="ExerciseItemSummary" :exerciseId="props.exerciseId" />
+          <ModuleComponent
+            :module="mod"
+            component="ExerciseItemSummary"
+            :exerciseId="props.exerciseId"
+          />
         </template>
       </button>
       <div v-if="toggleExpand" class="expand">
         <template v-for="mod in exercise.modules" :key="mod">
-          <ModuleComponent :module="mod" component="ExerciseItemExpanded" :exerciseId="props.exerciseId" />
+          <ModuleComponent
+            :module="mod"
+            component="ExerciseItemExpanded"
+            :exerciseId="props.exerciseId"
+          />
         </template>
         <button @click="exerciseStore.save">Save</button>
       </div>

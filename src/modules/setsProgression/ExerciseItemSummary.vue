@@ -11,8 +11,8 @@ const props = defineProps<Props>();
 
 const exerciseStore = useExerciseStore();
 
-const userData = computed(() =>
-  (exerciseStore.exercises?.[props.exerciseId] as any)?.moduleData['setsProgression']
+const userData = computed(
+  () => (exerciseStore.exercises?.[props.exerciseId] as any)?.moduleData['setsProgression'],
 );
 const currentProgression = computed(() =>
   userData.value

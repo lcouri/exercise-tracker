@@ -33,7 +33,7 @@ export const useFile = <T extends ValidFiles>(filePath: T) => {
         encoding: Encoding.UTF8,
       });
       file.value = JSON.parse(String(contents.data));
-    } catch (e) {
+    } catch {
       status.value = 'error';
     } finally {
       status.value = 'done';

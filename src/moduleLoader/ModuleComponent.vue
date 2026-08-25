@@ -9,8 +9,8 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const ModuleRender = defineAsyncComponent(() =>
-  import(`@/modules/${props.module}/${props.component}.vue`)
+const ModuleRender = defineAsyncComponent(
+  () => import(`@/modules/${props.module}/${props.component}.vue`),
 );
 </script>
 
@@ -18,5 +18,4 @@ const ModuleRender = defineAsyncComponent(() =>
   <ModuleRender :exerciseId="props.exerciseId" />
 </template>
 
-<style>
-</style>
+<style></style>
