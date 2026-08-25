@@ -1,8 +1,7 @@
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-
-import type { ExerciseJson } from '@/types/exercise';
-import type { ProgrammeJson } from '@/types/programme';
 import { ref } from 'vue';
+import type { ProgrammeJson } from '@/types/programme';
+import type { ExerciseSchemaT } from '@/schemas/exercise';
 import type { Status } from '@/types/status';
 
 const EXERCISE_FILE = 'exercise.json';
@@ -12,7 +11,7 @@ type ValidFiles = typeof EXERCISE_FILE | typeof PROGRAMME_FILE;
 
 export const useFile = <T extends ValidFiles>(filePath: T) => {
   const status = ref<Status>('init');
-  const file = ref<T extends typeof EXERCISE_FILE ? ExerciseJson : ProgrammeJson>();
+  const file = ref<T extends typeof EXERCISE_FILE ? ExerciseSchemaT : ProgrammeJson>();
 
   const writeFile = async (data: string) => {
     await Filesystem.writeFile({
