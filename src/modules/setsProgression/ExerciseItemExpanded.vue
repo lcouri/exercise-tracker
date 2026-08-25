@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useExerciseStore } from '@/stores/exercise';
-import setProgressionData from './setProgression.json';
+import setsProgressionData from './setsProgression.json';
 
 type Props = {
   exerciseId: string;
@@ -16,7 +16,7 @@ const userData = computed(
 );
 const currentProgression = computed(() =>
   userData.value
-    ? (setProgressionData as any)[userData.value.progression][userData.value.index]
+    ? (setsProgressionData as any)[userData.value.progression][userData.value.index]
     : null,
 );
 
