@@ -12,7 +12,7 @@ const props = defineProps<Props>();
 const exerciseStore = useExerciseStore();
 
 // shortcut to referenced exercise
-const exercise = computed<any>(() => exerciseStore.exercises?.[props.exerciseId]);
+const exercise = computed(() => exerciseStore.exercises?.[props.exerciseId]);
 
 const toggleExpand = ref<boolean>(false);
 </script>

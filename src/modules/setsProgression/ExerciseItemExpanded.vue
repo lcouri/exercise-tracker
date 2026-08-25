@@ -11,20 +11,20 @@ const props = defineProps<Props>();
 
 const exerciseStore = useExerciseStore();
 
-const userData = computed(
-  () => (exerciseStore.exercises?.[props.exerciseId] as any)?.moduleData['setsProgression'],
-);
+const userData = exerciseStore.getModuleData(props.exerciseId, 'setsProgression');
+
 const currentProgression = computed(() =>
-  userData.value
-    ? (setsProgressionData as any)[userData.value.progression][userData.value.index]
-    : null,
+  userData.value ? setsProgressionData[userData.value.progression][userData.value.index] : null,
 );
 
 const currentSetNumber = ref<number>(0);
 
 const nextProgression = () => {
-  if (userData.value.index < 2) {
-    userData.value.index += 1;
+  if (
+    exerciseStore.exercises?.[props.exerciseId]?.moduleData['setsProgression']?.index != null &&
+    exerciseStore.exercises[props.exerciseId]!.moduleData.setsProgression!.index < 2
+  ) {
+    exerciseStore.exercises[props.exerciseId]!.moduleData.setsProgression!.index += 1;
   }
 };
 </script>
@@ -34,7 +34,7 @@ const nextProgression = () => {
   <template v-else>
     <div>
       <button @click="currentSetNumber -= 1">-</button>
-      {{ `${currentSetNumber} / ${currentProgression.sets}` }}
+      {{ `${currentSetNumber} / ${currentProgression?.sets}` }}
       <button @click="currentSetNumber += 1">+</button>
     </div>
     <div>

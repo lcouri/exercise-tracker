@@ -21,12 +21,31 @@ Look into nice and typesafe ways of loading modules
 - ExerciseItem should be able to dynamically load and render a Summary component (in the item button that expands when you click it) and an Expanded component (in the expanded section of the exercise item)
   - these components are optional for a module to have
 ** DONE Module component to handle rendering in ExerciseItem
-** TODO_NEXT Join module schema with exercise schema
-** TODO Type safety in ModuleComponent
+** DONE Join module schema with exercise schema + Type safety in ModuleComponent
 - accepted module names are essentially the names of folders inside @/modules/
   - probably have to manually update the type for each module added - I don't think it's possible for ts to make a type based on reading filesystem directories (without getting too weird at least)
     - could make a script to generate the type, but I don't see that as much better than just updating manually
 - accepted component names are just ExerciseItemSummary and ExerciseItemExpanded for now
+- I see there being 2 approaches:
+  - more dynamically loading modules schemas
+    - so the module schema is dynamically loaded and parsed (e.g. await import('[module schema path]'))
+    - then the exercise schema doesn't have to be updated whenever a new module is added
+    - could use a list of valid modules for a little type safety
+    - a few issues I can think of:
+      - module data schemas won't really be known to the exercise schema (because it's dynamically loaded), so you'd need to type cast whenever you want to use the module data
+      - could be prone to typos - without having a list of valid module names anyway, but that kind of defeats the point of dynamically loading module schemas
+  - more statically loading module schemas
+    - so the exercise schema knows all the modules
+    - more typesafe - don't have to worry about casting or failing to load the schema
+    - a few issues:
+      - every time you add a module you have to update the exercise schema - kinda annoying
+      - would like to find a way to have key exhaustiveness checking with z.object, otherwise easy to forget to include module schema in moduleData (also every schema in there needs to be optional)
+- Going with the static approach for now - preferring type safety at this stage; it's probably easier to change from static to dynamic than the other way around
+** TODO_NEXT Handle module data in a nicer way
+- need a better way to get and modify module data - getModuleData gets a computed but that isn't great for changing state
+- I'd like modules to be able to see all the exercise data
+  - because might add a module (like history or timing) that looks at data for other modules
+  - a module should be guaranteed to have its own data, but everything else could be undefined
 ** TODO_LATER Think about handling loading and error states in ModuleComponent
 - the components are optional, so it wouldn't know that a component failing to load is an error
   - unless there's something like a manifest - something to think about

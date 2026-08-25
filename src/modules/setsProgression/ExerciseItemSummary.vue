@@ -11,13 +11,10 @@ const props = defineProps<Props>();
 
 const exerciseStore = useExerciseStore();
 
-const userData = computed(
-  () => (exerciseStore.exercises?.[props.exerciseId] as any)?.moduleData['setsProgression'],
-);
+const userData = exerciseStore.getModuleData(props.exerciseId, 'setsProgression');
+
 const currentProgression = computed(() =>
-  userData.value
-    ? (setsProgressionData as any)[userData.value.progression][userData.value.index]
-    : null,
+  userData.value ? setsProgressionData[userData.value.progression][userData.value.index] : null,
 );
 </script>
 
@@ -25,7 +22,7 @@ const currentProgression = computed(() =>
   <div v-if="!userData">Error loading Set Progression module</div>
   <template v-else>
     <div>
-      {{ `${currentProgression.sets}x${currentProgression.reps}` }}
+      {{ `${currentProgression?.sets}x${currentProgression?.reps}` }}
     </div>
   </template>
 </template>
