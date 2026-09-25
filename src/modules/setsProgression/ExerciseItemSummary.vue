@@ -1,30 +1,19 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useExerciseStore } from '@/stores/exercise';
 import setsProgressionData from './setsProgression.json';
+import type { ModuleDataT } from '@/schemas/exercise';
 
-type Props = {
-  exerciseId: string;
-};
+const moduleData = defineModel<ModuleDataT<'setsProgression'>>({ required: true });
 
-const props = defineProps<Props>();
-
-const exerciseStore = useExerciseStore();
-
-const userData = exerciseStore.getModuleData(props.exerciseId, 'setsProgression');
-
-const currentProgression = computed(() =>
-  userData.value ? setsProgressionData[userData.value.progression][userData.value.index] : null,
+const currentProgression = computed(
+  () => setsProgressionData[moduleData.value.progression][moduleData.value.index],
 );
 </script>
 
 <template>
-  <div v-if="!userData">Error loading Set Progression module</div>
-  <template v-else>
-    <div>
-      {{ `${currentProgression?.sets}x${currentProgression?.reps}` }}
-    </div>
-  </template>
+  <div>
+    {{ `${currentProgression?.sets}x${currentProgression?.reps}` }}
+  </div>
 </template>
 
 <style></style>

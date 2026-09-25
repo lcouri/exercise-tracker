@@ -13,7 +13,7 @@
 - parsing for reading and especially writing data has a lot of casting 'as' - hopefully can do something about that later
 - should probably do the same for programme.json, but that can come later - I'd rather get the exercise part to where I want it first, the programme part should be a lot simpler
 
-* TODO_NEXT Module loading
+* TODO_LATER Module loading
 Look into nice and typesafe ways of loading modules
 - user saved data should say which modules are used for an exercise
 - schemas should be able to dynamically add module schemas to the exercise schema
@@ -41,14 +41,27 @@ Look into nice and typesafe ways of loading modules
       - every time you add a module you have to update the exercise schema - kinda annoying
       - would like to find a way to have key exhaustiveness checking with z.object, otherwise easy to forget to include module schema in moduleData (also every schema in there needs to be optional)
 - Going with the static approach for now - preferring type safety at this stage; it's probably easier to change from static to dynamic than the other way around
-** TODO_NEXT Handle module data in a nicer way
+** DONE Handle module data in a nicer way
 - need a better way to get and modify module data - getModuleData gets a computed but that isn't great for changing state
 - I'd like modules to be able to see all the exercise data
   - because might add a module (like history or timing) that looks at data for other modules
   - a module should be guaranteed to have its own data, but everything else could be undefined
-** TODO_LATER Think about handling loading and error states in ModuleComponent
+*** notes after done:
+- turns out getModuleData returning a computed just complicated things more than needed; it can just return the nested object since it should all be reactive
+- moved the getModuleData part to ModuleComponent
+  - this means that the module components (Summary, Expanded) don't need to worry about not having data
+- the module components now only use a v-model for their module data
+  - need to provide type and { required: true } in the defineModel
+  - removed exerciseId prop from the module components; I'm thinking it might be needed later, but it should be ok for now
+** DONE Think about handling loading and error states in ModuleComponent
 - the components are optional, so it wouldn't know that a component failing to load is an error
   - unless there's something like a manifest - something to think about
+*** Error states handled in previous task [Handle module data in a nicer way], made new task for loading states
+** TODO_LATER Handle loading states in ModuleComponent
+- add a spinner while loading
+  - maybe only if it's loading for more than half a second or something like that
+- should be able to check exerciseStore.status
+  - edge case of if no file exists (initial load)
 ** TODO_LATER Think about waiting for all the modules to load before rendering everything
 - just in case there's any flickering or elements jumping around while modules are loading
 - defineAsyncComponent takes a function that returns a Promise so a possible way is:
@@ -56,15 +69,17 @@ Look into nice and typesafe ways of loading modules
   - when the promise resolves, then change the loading state to loaded
   - when all are loaded (probably with a short delay in case modules are added after some have fully loaded), then that's the signal to render everything or remove the spinner
 
-* TODO Modules
-Split exercise data into plugins for:
+* TODO_NEXT Modules
+Each module should have: a schema for its own data, a Summary component, an Expanded component.
+These might be optional and they might also need some other things, like data not tied to an exercise or something for the Exercise View in the future; it should become clearer as I'm working on the modules.
+
+These are the modules to make for now:
 ** TODO sets + reps
 ** TODO weight
 ** TODO AMRAP
-** TODO notes
-** TODO then remove the whole combining/uncombining exercise data thing since it shouldn't be needed
+** TODO notes (on exercises)
 
-* TODO Zod schemas for exercise & programme
+* TODO Zod schema for programme
 
 * TODO Exercise View for adding/editing exercises
 - should probably make my workout using this to make sure it works
@@ -75,5 +90,8 @@ Split exercise data into plugins for:
 * TODO Programme View
 - most of the hard work should be done before this, so it should be relatively simple
 ** Depends on Zod schemas
+
+* TODO Remove static dummy data files
+- i.e. exercise.json and programme.json
 
 * TODO Temp file for keeping state when closing app

@@ -1,4 +1,4 @@
-import { ref, watch, computed } from 'vue';
+import { ref, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { useFile } from '@/composables/file';
 import staticExerciseData from '@/exercise.json';
@@ -30,10 +30,7 @@ export const useExerciseStore = defineStore('exercise', () => {
   const getModuleData = <T extends ValidModulesT>(
     exerciseId: keyof ExerciseSchemaT,
     moduleName: T,
-  ) =>
-    computed<ExerciseSchemaT[string]['moduleData'][T]>(
-      () => exercises.value[exerciseId]?.moduleData[moduleName],
-    );
+  ) => exercises.value[exerciseId]?.moduleData[moduleName];
 
   return {
     exercises,
