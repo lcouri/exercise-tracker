@@ -18,14 +18,14 @@ Look into nice and typesafe ways of loading modules
 - user saved data should say which modules are used for an exercise
 - schemas should be able to dynamically add module schemas to the exercise schema
   - unless I can think of a better of handling exercise and module schemas
-- ExerciseItem should be able to dynamically load and render a Summary component (in the item button that expands when you click it) and an Expanded component (in the expanded section of the exercise item)
+- ExerciseItem should be able to dynamically load and render a Summary component (in the item button that expands when you click it) and a Details component (in the details section of the exercise item)
   - these components are optional for a module to have
 ** DONE Module component to handle rendering in ExerciseItem
 ** DONE Join module schema with exercise schema + Type safety in ModuleComponent
 - accepted module names are essentially the names of folders inside @/modules/
   - probably have to manually update the type for each module added - I don't think it's possible for ts to make a type based on reading filesystem directories (without getting too weird at least)
     - could make a script to generate the type, but I don't see that as much better than just updating manually
-- accepted component names are just ExerciseItemSummary and ExerciseItemExpanded for now
+- accepted component names are just ExerciseItemSummary and ExerciseItemDetails for now
 - I see there being 2 approaches:
   - more dynamically loading modules schemas
     - so the module schema is dynamically loaded and parsed (e.g. await import('[module schema path]'))
@@ -49,7 +49,7 @@ Look into nice and typesafe ways of loading modules
 *** notes after done:
 - turns out getModuleData returning a computed just complicated things more than needed; it can just return the nested object since it should all be reactive
 - moved the getModuleData part to ModuleComponent
-  - this means that the module components (Summary, Expanded) don't need to worry about not having data
+  - this means that the module components (Summary, Details) don't need to worry about not having data
 - the module components now only use a v-model for their module data
   - need to provide type and { required: true } in the defineModel
   - removed exerciseId prop from the module components; I'm thinking it might be needed later, but it should be ok for now
@@ -70,7 +70,7 @@ Look into nice and typesafe ways of loading modules
   - when all are loaded (probably with a short delay in case modules are added after some have fully loaded), then that's the signal to render everything or remove the spinner
 
 * TODO_NEXT Modules
-Each module should have: a schema for its own data, a Summary component, an Expanded component.
+Each module should have: a schema for its own data, a Summary component, an Details component.
 These might be optional and they might also need some other things, like data not tied to an exercise or something for the Exercise View in the future; it should become clearer as I'm working on the modules.
 
 These are the modules to make for now:

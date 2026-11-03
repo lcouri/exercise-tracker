@@ -34,7 +34,7 @@ const exercise = computed(() => exerciseStore.exercises?.[props.exerciseId]);
       <template v-for="mod in exercise.modules" :key="mod">
         <ModuleComponent
           :module="mod"
-          component="ExerciseItemExpanded"
+          component="ExerciseItemDetails"
           :exerciseId="props.exerciseId"
         />
       </template>
