@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useExerciseStore } from '@/stores/exercise';
 import ModuleComponent from '@/moduleLoader/ModuleComponent.vue';
 
@@ -13,16 +13,16 @@ const exerciseStore = useExerciseStore();
 
 // shortcut to referenced exercise
 const exercise = computed(() => exerciseStore.exercises?.[props.exerciseId]);
-
-const toggleExpand = ref<boolean>(false);
 </script>
 
 <template>
-  <div>
-    <div v-if="!exercise">Error</div>
-    <template v-else>
-      <button class="exercise-button" @click="toggleExpand = !toggleExpand">
-        <div>{{ exercise.name }}</div>
+  <div v-if="!exercise">Error</div>
+  <template v-else>
+    <details class="exercise-details">
+      <summary class="exercise-summary">
+        <div>
+          {{ exercise.name }}
+        </div>
         <template v-for="mod in exercise.modules" :key="mod">
           <ModuleComponent
             :module="mod"
@@ -30,46 +30,39 @@ const toggleExpand = ref<boolean>(false);
             :exerciseId="props.exerciseId"
           />
         </template>
-      </button>
-      <div v-if="toggleExpand" class="expand">
-        <template v-for="mod in exercise.modules" :key="mod">
-          <ModuleComponent
-            :module="mod"
-            component="ExerciseItemExpanded"
-            :exerciseId="props.exerciseId"
-          />
-        </template>
-        <button @click="exerciseStore.save">Save</button>
-      </div>
-    </template>
-  </div>
+      </summary>
+      <template v-for="mod in exercise.modules" :key="mod">
+        <ModuleComponent
+          :module="mod"
+          component="ExerciseItemExpanded"
+          :exerciseId="props.exerciseId"
+        />
+      </template>
+      <button @click="exerciseStore.save">Save</button>
+    </details>
+  </template>
 </template>
 
 <style>
-.exercise-button {
+.exercise-details {
+  border: 1px solid black;
+  padding: 0 0.5rem;
+}
+
+.exercise-details[open] {
+  padding-bottom: 0.5rem;
+}
+
+.exercise-summary {
   display: flex;
+  gap: 1rem;
   font-family: sans-serif;
-  font-size: 1rem;
-  text-align: start;
+  padding: 0.5rem;
+  margin: 0 -0.5rem;
 }
 
-.expand {
-  grid-column: span 3;
-}
-
-.notes {
-  max-height: 50vh;
-  overflow: auto;
-}
-
-.edit-button {
-  position: sticky;
-  bottom: 0;
-
-  & > button {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-  }
+.exercise-details[open] .exercise-summary {
+  border-bottom: 1px solid black;
+  margin: 0 -0.5rem 0.5rem;
 }
 </style>
